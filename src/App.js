@@ -3,7 +3,28 @@ import './App.less';
 import 'hg-parapicker/dist/picker.min.css';
 import ParaPicker from 'hg-parapicker';
 import Begin from '~/begin/begin.js';
+import {observable, action, computed} from 'mobx';
+import {observer} from 'mobx-react';
 
+class Store {
+  @observable config = [{
+    title: "平民",
+    done: true,
+  }, {
+    title: "狼人",
+    done: true,
+  }];
+
+  @action changeState({index, title}){
+    this.config[index].title = title
+  }
+
+  @computed get selectItem () {
+    return  this.config.filter((item) => item.done)
+  }
+}
+
+const store = new Store();
 // var players = [1,2,3,4,5,6,7,8,9,10,11,12];
 
 var data = [
@@ -11,6 +32,7 @@ var data = [
     ['存活', '死亡', '吃刀', '票出', '吃毒', '中枪']
 ];
 
+@observer
 class App extends Component {
   	constructor(props) {
 	    super(props);
@@ -52,7 +74,7 @@ class App extends Component {
   	render() {
     	return (
 	      	<div className="App">
-	      		<Begin />	
+	      		<Begin store={store} />
 	        	<ul className="number-box">  
 	          		{
 	          			this.state.players.map((val, index) => {

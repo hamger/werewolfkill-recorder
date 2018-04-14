@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './begin.less';
-
-var options = ['平民', '狼人', '预言家', '女巫', '猎人', '白痴'];
+// var options = ['平民', '狼人', '预言家', '女巫', '猎人', '白痴'];
 
 class Begin extends Component {
   	constructor(props) {
@@ -15,12 +14,12 @@ class Begin extends Component {
           <h3>请选择本局配置</h3> 
         	<div className="options-box">  
           		{
-          			options.map((val, index) => {
+          			this.props.store.config.map((val, index) => {
           				return (
-                    <span>{val}</span>
+                    <span key={index}>{val.title}</span>
         					)
           			})
-        		 	}  
+        		 	}
         	</div>
       	</div>
     	);
