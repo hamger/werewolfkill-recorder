@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '#/css/index.less';
 import './App.less';
 import 'hg-parapicker/dist/picker.min.css';
 import ParaPicker from 'hg-parapicker';
@@ -7,25 +8,47 @@ import {observable, action, computed} from 'mobx';
 import {observer} from 'mobx-react';
 
 class Store {
-  @observable config = [{
-    title: "平民",
-    done: true,
-  }, {
-    title: "狼人",
-    done: true,
-  }];
+  @observable config;
 
-  @action changeState({index, title}){
-    this.config[index].title = title
+  constructor () {
+    this.config = [{
+      title: "平民",
+      number: 4,
+      select: true,
+    }, {
+      title: "狼人",
+      number: 4,
+      select: true,
+    }, {
+      title: "预言家",
+      select: true,
+    }, {
+      title: "女巫",
+      select: true,
+    }, {
+      title: "猎人",
+      select: true,
+    }, {
+      title: "白痴",
+      select: true,
+    }, {
+      title: "守卫",
+      select: false,
+    }];
+    this.aaa = 123;
+  }
+
+  @action select = (index) => {
+    this.config[index].select = !this.config[index].select
+    console.log(this.config[index].select);
   }
 
   @computed get selectItem () {
-    return  this.config.filter((item) => item.done)
+    return  this.config.filter((item) => item.select)
   }
 }
 
 const store = new Store();
-// var players = [1,2,3,4,5,6,7,8,9,10,11,12];
 
 var data = [
     ['平民', '狼人', '预言家', '女巫', '猎人', '白痴'],
@@ -60,7 +83,7 @@ class App extends Component {
   		for (var i = 0; i < len; i++) {
 	  		new ParaPicker({
 	            inputId: `btn${i}`,
-	            title: `${i}号玩家`,
+	            title: `${i+1}号玩家`,
 	            data: data,
 	            success: (arr) => {
 	       //          this.setState({
