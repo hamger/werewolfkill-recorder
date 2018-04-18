@@ -90,7 +90,7 @@ class App extends Component {
             select: false,
           }
         ],
-        showConfig: true,
+        showConfig: false,
         initConfig: []
 	    };
   	}
@@ -126,7 +126,7 @@ class App extends Component {
     sub (index) {
       let configCopy = JSON.parse(JSON.stringify(this.state.config));
       let number = configCopy[index].number--;
-      if(number <= 2) configCopy[index].number = 2;
+      if(number <= 1) configCopy[index].number = 1;
       else configCopy.number = number;
       this.setState({config: configCopy});
     }
@@ -146,33 +146,35 @@ class App extends Component {
   	render() {
     	return (
 	      	<div className="App">
-            <div className="begin"
-              style={{display: this.state.showConfig ? 'block' : 'none'}}>
-              <h3>请选择本局配置</h3>
-              <div className="options-box">  
-                  {
-                    this.state.config.map((val, index) => {
-                      return (
-                        val.number ?
-                        <p style={{marginRight: '32px'}} key={index}>
-                          {val.title}-{val.number}
-                          <em onClick={this.add.bind(this, index)} className="solid-arrow-up"></em>
-                          <em onClick={this.sub.bind(this, index)} className="solid-arrow-down"></em>
-                        </p>
-                        : <p onClick={this.select.bind(this, index)} key={index}>
-                        <i style={{backgroundColor: val.select ? '#365dea' : '#FFF'}}></i>
-                        {val.title}</p>
-                      )
-                    })
-                  }
-              </div>
-              <div className="options-btn">
-                <button onClick={this.initConfig.bind(this)}>确认</button>
-                <button onClick={this.cancleConfig.bind(this)}>取消</button>
-              </div>
+            <div className="show-config" onClick={() => {this.setState({showConfig: true})}}>
+              <button>修改配置</button>
             </div>
-            <div className="show-config">
-              {this.state.showConfig ? '隐藏配置' : '显示配置'}
+            <div className="change-config"
+              style={{display: this.state.showConfig ? 'block' : 'none'}}>
+              <div className="options-area">
+                <h3>请选择本局配置</h3>
+                <div className="options-box">  
+                    {
+                      this.state.config.map((val, index) => {
+                        return (
+                          val.number ?
+                          <p style={{marginRight: '32px'}} key={index}>
+                            {val.title}-{val.number}
+                            <em onClick={this.add.bind(this, index)} className="solid-arrow-up"></em>
+                            <em onClick={this.sub.bind(this, index)} className="solid-arrow-down"></em>
+                          </p>
+                          : <p onClick={this.select.bind(this, index)} key={index}>
+                          <i style={{backgroundColor: val.select ? '#365dea' : '#FFF'}}></i>
+                          {val.title}</p>
+                        )
+                      })
+                    }
+                </div>
+                <div className="options-btn">
+                  <button onClick={this.initConfig.bind(this)}>确认</button>
+                  <button onClick={this.cancleConfig.bind(this)}>取消</button>
+                </div>
+              </div>
             </div>
 	      		{/*<Begin store={store} />*/}
 	        	<ul className="number-box">  

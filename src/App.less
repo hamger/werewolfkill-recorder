@@ -1,8 +1,20 @@
 @blue: #28b7ef;
 
+.App {
+  padding: 15px;
+}
+.show-config {
+  button {
+    border-radius: 5px;
+    color: #ff9925;
+    border: 1px solid #ff9925;
+    padding: 3px 8px;
+    background-color: #fff;
+  }
+}
+
 .number-box {
   background-color: #fff;
-  padding: 1px;
   li {
     display: inline-block;
     height: 50px;
@@ -38,34 +50,51 @@
   border-left: 8px solid transparent;
 }
 
-.begin {
-  padding: 15px;
-  background-color: #fff;
-  .options-box {
-    line-height: 25px;
-    p { 
-        position: relative;
-        cursor: pointer;
-        display: inline-block;
-        padding-right: 20px;
-        i {
-          margin-right: 6px;
+.change-config {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  background-color: #333333c7;
+  .options-area {
+    padding: 15px;
+    border-radius: 8px;
+    position: absolute;
+    width: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    background-color: #fff;
+    .options-box {
+      padding: 10px 0;
+      line-height: 30px;
+      p { 
+          position: relative;
+          cursor: pointer;
           display: inline-block;
-          height: 8px;
-          width: 8px;
-          border: 1px solid blue;
-          border-radius: 50%;
-        }
+          padding-right: 20px;
+          i {
+            margin-right: 6px;
+            display: inline-block;
+            height: 8px;
+            width: 8px;
+            border: 1px solid blue;
+            border-radius: 50%;
+          }
+      }
     }
-  }
-  .options-btn {
-    margin-top: 10px;
-    button {
-      background-color: #36b0f9;
-      color: #fff;
-      border-radius: 5px;
-      padding: 3px 8px;
-      margin-right: 20px;
+    .options-btn {
+      margin-top: 10px;
+      button {
+        background-color: #36b0f9;
+        color: #fff;
+        border-radius: 5px;
+        padding: 3px 8px;
+        margin-right: 20px;
+      }
     }
   }
 }
