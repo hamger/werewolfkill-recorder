@@ -91,13 +91,13 @@ class App extends Component {
           }
         ],
         showConfig: false,
-        initConfig: []
+        initConfig: [],
+        count: 0
 	    };
   	}
 
   	componentDidMount () {
-  		let len = this.state.config.length;
-  		for (var i = 0; i < len; i++) {
+  		for (var i = 0; i < this.state.count; i++) {
 	  		new ParaPicker({
 	            inputId: `btn${i}`,
 	            title: `${i+1}号玩家`,
@@ -132,11 +132,18 @@ class App extends Component {
     }
     
     initConfig () {
-      let initConfig = [];
-      this.state.config.forEach((val) => {
+      let initConfig = [], count = 0;
+      this.state.config.forEach(val => {
         if (val.number || val.select) initConfig.push(val)
       })
-      this.setState({initConfig: initConfig, showConfig: false});
+      initConfig.forEach(val => {
+        if (val.number) count += val.number;
+        else count++;
+      })
+      this.setState({initConfig: initConfig, showConfig: false, count: count});
+      setTimeout((argument) => {
+
+      });
     }
 
     cancleConfig () {
@@ -178,15 +185,15 @@ class App extends Component {
             </div>
 	      		{/*<Begin store={store} />*/}
 	        	<ul className="number-box">  
-	          		{
-	          			this.state.config.map((val, index) => {
-	          				return (
-	          		 			<li id={`btn${index}`} key={index}>
-	          		 				{`${index + 1}号`}
-          		 				</li>
-          					)
-	          			})
-          		 	}  
+          		{
+          		  [2,2,2,2].map((val, index) => {
+                  return (
+                    <li id={`btn${index}`} key={index}>
+                      {`${index + 1}号`}
+                    </li>
+                  )
+                })
+        		 	}  
 	        	</ul>
 	      	</div>
     	);
