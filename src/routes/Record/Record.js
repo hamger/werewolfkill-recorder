@@ -1,55 +1,42 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import styles from './Record.css';
-import 'hg-parapicker/dist/picker.min.css';
-import ParaPicker from 'hg-parapicker';
-
-const selectItems = [
-  ['未知', '平民', '狼人'],
-  ['存活', '死亡']
-];
+import styles from './Record.less';
+import PlayersPanel from '../../components/PlayersPanel/PlayersPanel';
+import VoteInput from '../../components/VoteInput/VoteInput';
+import { Button } from 'antd';
 
 class Record extends Component {
   constructor (props) {
     super(props)
-    this.state = props.allocation
-    let players = []
-    for (let i=0; i < this.state.amount; i++) {
-      players.push({id: i, identity: '未知', status: '存活'})
-    }
-    this.state.players = players
-    this.state.configGod.forEach(item => {
-      selectItems[0].push(item.title)
-    });
+    this.allocation = props.allocation
+    this.record = props.record
+    this.dispatch = props.dispatch
   }
 
-  componentDidMount () {
-    for (let i = 0; i < this.state.amount; i++) {
-      new ParaPicker({
-        inputId: `player-${i}`,
-        title: `${i+1}号玩家`,
-        data: selectItems,
-        success: (arr) => {
-          let tempArr = this.state.players
-          tempArr[i].identity = arr[0]
-          tempArr[i].status = arr[1]
-          this.setState({players: tempArr})
-        }
-      });
-    }
+  vote (status) {
+    this.dispatch({
+      type: 'record/changeVoteStatus',
+      payload: status
+    })
   }
 
   render () {
     return (
-      <div className={styles.normal}>
-        {
-          this.state.players.map(item => {
-            return <div key={item.id} id={`player-${item.id}`} className={styles.player}
-            style={{backgroundColor: item.status === '存活' ? '#5bb1fb' : '#bebebe'}}>
-              {item.id + 1 + '号'}<br/>{item.identity}
-            </div>
-          })
-        }
+      <div className={styles.wrap}>
+        <PlayersPanel status={this.record.voteStatus} amount={this.allocation.amount} configGod={this.allocation.configGod}></PlayersPanel>
+        
+        <div className={styles.voteBox}>
+          <h5>竞选警长</h5>
+          <VoteInput></VoteInput>
+        </div>
+        <div className={styles.voteBox}>
+          <h5>第一天</h5>
+          <VoteInput></VoteInput>
+        </div>
+        <div className={styles.buttonBox}> 
+          <Button type="primary" onClick={() => this.vote(true)}>开始投票</Button>
+          <Button  onClick={() => this.vote(false)}>结束投票</Button>
+        </div>
       </div>
     );
   }
@@ -61,7 +48,10 @@ Record.propTypes = {
 // 函数的返回值作为 props 传入组件
 function mapStateToProps(state) {
   // {key : state.命名空间}
-  return  {allocation: state.allocation};
+  return  {
+    allocation: state.allocation,
+    record: state.record
+  };
 }
 
 export default connect(mapStateToProps)(Record);

@@ -1,4 +1,4 @@
-import styles from './About.css';
+import styles from './About.less';
 
 const About = () => {
   

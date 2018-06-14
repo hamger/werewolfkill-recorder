@@ -10,7 +10,7 @@ const app = dva({
 // app.use({});
 
 // 3. Model
-app.model(require('./models/example').default);
+app.model(require('./models/record').default);
 app.model(require("./models/allocation").default);
 
 // 4. Router

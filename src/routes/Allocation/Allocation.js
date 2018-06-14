@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import styles from './Allocation.css';
+import styles from './Allocation.less';
 import { Button, InputNumber, Checkbox, Row, Col } from 'antd';
 import { routerRedux } from 'dva/router';
 
@@ -16,23 +16,27 @@ const Allocation = ({allocation, dispatch}) => {
     alert('配置成功');
     dispatch(routerRedux.push('/'));
   }
+
   function cancle() {
     dispatch(routerRedux.push('/'));
   }
+
   function changeBase(id, value) {
     configBase[id].number = value
-  } 
+  }
+
   function changeGod(id, value) {
     configGod[id].select = value.target.checked
-  } 
+  }
+
   return (
-    <div className={styles.normal}>
+    <div className={styles.wrap}>
       <Row>
-        <Col span={8}>
-          平民 <InputNumber min={1} max={10} defaultValue={configBase[0].number}  onChange={(value) => changeBase(0, value)} />
+        <Col span={12}>
+          <span>平民</span> <InputNumber min={1} max={10} defaultValue={configBase[0].number}  onChange={(value) => changeBase(0, value)} />
         </Col>
-        <Col span={8}>
-          狼人 <InputNumber min={1} max={10} defaultValue={configBase[1].number}  onChange={changeBase.bind(this, 1)} />
+        <Col span={12}>
+          <span>狼人</span> <InputNumber min={1} max={10} defaultValue={configBase[1].number}  onChange={changeBase.bind(this, 1)} />
         </Col>
       </Row>
       <Row>
@@ -46,8 +50,10 @@ const Allocation = ({allocation, dispatch}) => {
           })
         }
       </Row>
-      <Button type="primary" onClick={save}>保存</Button>
-      <Button onClick={cancle}>返回</Button>
+      <Row>
+        <Button className={styles.button} type="primary" onClick={save}>保存</Button>
+        <Button className={styles.button} onClick={cancle}>返回</Button>
+      </Row>
     </div>
   );
 } 
