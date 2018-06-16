@@ -1,33 +1,18 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
+import React from 'react';
 import styles from './VoteInput.less';
-import { Input, Row, Col } from 'antd';
 
-class VoteInput extends Component {
-  constructor (props) {
-    super(props)
-    this.state = props.allocation
-  }
 
-  componentDidMount () {
-  }
-
-  render () {
-    return (
-      <Row className={styles.voteRow}>
-        <Col span={11}><Input /></Col>
-        <Col span={2}><span> 投 </span></Col>
-        <Col span={11}><Input /></Col>
-      </Row>
-    );
-  }
+const VoteInput = ({voter, votee}) => {
+  return (
+    <p className={styles.voteMark}>
+      <span>{voter}</span>
+      投
+      <span>{votee}</span>
+    </p>
+  );
 } 
 
 VoteInput.propTypes = {
 };
 
-function mapStateToProps(state) {
-  return  {allocation: state.allocation};
-}
-
-export default connect(mapStateToProps)(VoteInput);
+export default VoteInput;

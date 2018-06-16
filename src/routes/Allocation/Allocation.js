@@ -9,11 +9,19 @@ const Allocation = ({allocation, dispatch}) => {
   let { configBase, configGod } = allocation
   
   function save() {
+    let amount = configBase[0].number + configBase[1].number;
+    configGod.forEach(item => {
+        if(item.select) amount++
+    });
     dispatch({
       type: 'allocation/save',
-      payload: configBase, configGod
+      payload: configBase, configGod, amount
     });
-    alert('配置成功');
+    dispatch({
+      type: 'record/createPlayers',
+      payload: amount
+    });
+    // alert('配置成功');
     dispatch(routerRedux.push('/'));
   }
 
@@ -27,16 +35,17 @@ const Allocation = ({allocation, dispatch}) => {
 
   function changeGod(id, value) {
     configGod[id].select = value.target.checked
+    console.log(configGod)
   }
 
   return (
     <div className={styles.wrap}>
       <Row>
         <Col span={12}>
-          <span>平民</span> <InputNumber min={1} max={10} defaultValue={configBase[0].number}  onChange={(value) => changeBase(0, value)} />
+          <span>平民</span> <InputNumber min={1} max={8} defaultValue={configBase[0].number}  onChange={(value) => changeBase(0, value)} />
         </Col>
         <Col span={12}>
-          <span>狼人</span> <InputNumber min={1} max={10} defaultValue={configBase[1].number}  onChange={changeBase.bind(this, 1)} />
+          <span>狼人</span> <InputNumber min={1} max={8} defaultValue={configBase[1].number}  onChange={changeBase.bind(this, 1)} />
         </Col>
       </Row>
       <Row>
@@ -64,7 +73,10 @@ Allocation.propTypes = {
 // 函数的返回值作为 props 传入组件
 function mapStateToProps(state) {
   // {key : state.命名空间}
-  return  {allocation: state.allocation};
+  return  {
+    allocation: state.allocation,
+    record: state.record
+  };
 }
 
 export default connect(mapStateToProps)(Allocation);

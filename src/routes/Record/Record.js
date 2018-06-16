@@ -13,30 +13,74 @@ class Record extends Component {
     this.dispatch = props.dispatch
   }
 
-  vote (status) {
+  vote (status, id) {
+    if(status === 1) {
+      this.dispatch({
+        type: 'record/startVote',
+        payload: id
+      })
+    } else if (status === 2) {
+      this.dispatch({
+        type: 'record/markVote',
+        payload: id
+      })
+      this.dispatch({
+        type: 'record/startVote',
+        payload: id
+      })
+    } else {
+      this.dispatch({
+        type: 'record/markVote',
+        payload: id
+      })
+    }
     this.dispatch({
       type: 'record/changeVoteStatus',
-      payload: status
+      payload: status, id
+    })
+  }
+
+  addNote () {
+    this.dispatch({
+      type: 'record/addNote'
     })
   }
 
   render () {
     return (
       <div className={styles.wrap}>
-        <PlayersPanel status={this.record.voteStatus} amount={this.allocation.amount} configGod={this.allocation.configGod}></PlayersPanel>
-        
-        <div className={styles.voteBox}>
-          <h5>竞选警长</h5>
-          <VoteInput></VoteInput>
-        </div>
-        <div className={styles.voteBox}>
-          <h5>第一天</h5>
-          <VoteInput></VoteInput>
-        </div>
-        <div className={styles.buttonBox}> 
-          <Button type="primary" onClick={() => this.vote(true)}>开始投票</Button>
-          <Button  onClick={() => this.vote(false)}>结束投票</Button>
-        </div>
+        <PlayersPanel configGod={this.allocation.configGod}></PlayersPanel>
+        {
+          this.props.record.notes.map(item => {
+            return (
+              <div key={item.id}  className={styles.voteBox}>
+                <div className={styles.head}>
+                  <h5>{item.title}</h5>
+                    <div className={styles.buttonBox}>
+                    {
+                      item.voteStatus === 0 ? (
+                        <Button size='small' onClick={() => this.vote(1, item.id)}>投票</Button>
+                      ) : (
+                        [<Button size='small' key={0} onClick={() => this.vote(2, item.id)}>下一组</Button>,
+                        <Button size='small' key={1} onClick={() => this.vote(0, item.id)}>结束</Button>]
+                      )
+                    }
+                  </div>
+                </div>
+                <div className={styles.content}>
+                  {
+                    item.vote.map((item2, index) => {
+                      return ( 
+                        <VoteInput key={index} voter={item2.voter} votee={item2.votee}></VoteInput>
+                      )
+                    })
+                  }
+                </div>
+              </div>
+            )
+          })
+        }
+        <Button onClick={() => this.addNote()}>下一轮</Button>
       </div>
     );
   }

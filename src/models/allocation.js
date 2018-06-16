@@ -51,97 +51,21 @@ export default {
         select: false,
     }, {
         id: 9,
-        title: "盗贼",
-        select: false,
-    }, {
-        id: 10,
         title: "丘比特",
         select: false,
     }, {
-        id: 11,
-        title: "野孩子",
-        select: false,
-    }, {
-        id: 12,
-        title: "小女孩",
-        select: false,
-    }, {
-        id: 13,
+        id: 10,
         title: "驯熊师",
-        select: false,
-    }, {
-        id: 14,
-        title: "吹笛者",
-        select: false,
-    }, {
-        id: 15,
-        title: "纵火者",
-        select: false,
-    }, {
-        id: 16,
-        title: "白狼",
-        select: false,
-    }, {
-        id: 17,
-        title: "乌鸦",
-        select: false,
-    }, {
-        id: 18,
-        title: "狼狗",
-        select: false,
-    }, {
-        id: 19,
-        title: "大野狼",
-        select: false,
-    }, {
-        id: 20,
-        title: "种狼",
-        select: false,
-    }, {
-        id: 21,
-        title: "两姊妹",
-        select: false,
-    }, {
-        id: 22,
-        title: "三兄弟",
-        select: false,
-    }, {
-        id: 23,
-        title: "狐狸",
-        select: false,
-    }, {
-        id: 24,
-        title: "种狼",
-        select: false,
-    }, {
-        id: 25,
-        title: "口吃法官",
-        select: false,
-    }, {
-        id: 26,
-        title: "锈剑骑士",
-        select: false,
-    }, {
-        id: 27,
-        title: "天使",
-        select: false,
-    }, {
-        id: 28,
-        title: "火狼",
         select: false,
     }]
   },
 
   reducers: {
-    save (state, {payload: configBase, configGod}) {
-        let amount = configBase[0].number + configBase[1].number;
-        configGod.forEach(item => {
-            if(item.select) amount++
-        });
+    save (state, {payload: configBase, configGod, amount}) {
         return {
             ...state,
-            configBase,
-            configGod,
+            configBase: configBase,
+            configGod: configGod,
             amount: amount
         }
     }
