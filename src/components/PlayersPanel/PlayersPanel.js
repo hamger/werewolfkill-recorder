@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import styles from './PlayersPanel.less';
-import 'hg-parapicker/dist/picker.min.css';
+import 'hg-parapicker/picker.css';
 import ParaPicker from 'hg-parapicker';
 import { Affix } from 'antd';
 
