@@ -1,12 +1,14 @@
 import styles from './About.less';
+import { Link } from 'dva/router';
 
 const About = () => {
   
   return (
     <div className={styles.normal}>
-      <div>WR is a short name of wereworfkill-recorder.</div>
-      <div>Author: Hanger</div>
+      <h2>WR is a short name of wereworfkill-recorder.</h2>
+      <div>Author: <b>Hanger</b></div>
       <div><a href="https://github.com/hamger/werewolfkill-recorder" target="brank">Github</a></div>
+      <div><Link to="/">返回</Link></div>
     </div>
   );
 } 

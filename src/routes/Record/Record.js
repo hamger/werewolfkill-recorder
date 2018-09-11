@@ -39,7 +39,12 @@ class Record extends Component {
       payload: status, id
     })
   }
-
+  delVote (i, j) {
+    this.dispatch({
+      type: 'record/delVote',
+      payload: i, j
+    })
+  }
   addNote () {
     this.dispatch({
       type: 'record/addNote'
@@ -51,7 +56,7 @@ class Record extends Component {
       <div className={styles.wrap}>
         <PlayersPanel configGod={this.allocation.configGod}></PlayersPanel>
         {
-          this.props.record.notes.map(item => {
+          this.props.record.notes.map((item, idx) => {
             return (
               <div key={item.id}  className={styles.voteBox}>
                 <div className={styles.head}>
@@ -70,8 +75,11 @@ class Record extends Component {
                 <div className={styles.content}>
                   {
                     item.vote.map((item2, index) => {
-                      return ( 
-                        <VoteInput key={index} voter={item2.voter} votee={item2.votee}></VoteInput>
+                      return (
+                        <div className={styles.listItem}>
+                          <VoteInput key={index} voter={item2.voter} votee={item2.votee}></VoteInput>
+                          <span key={index} className={styles.delBtn} onClick={() => this.delVote(idx, index)}>x</span>
+                        </div>
                       )
                     })
                   }

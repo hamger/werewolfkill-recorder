@@ -34,7 +34,6 @@ export default {
       for (let i = 0; i < amount; i++) {
         players.push({id: i, identity: '未知', status: '存活', voted: 0})
       }
-      console.log(players)
       return {
         ...state,
         players: players,
@@ -65,13 +64,20 @@ export default {
         data.tempVote = data.tempVote.map(val => {
           return val + 1 + '号'
         })
-        console.log(data.tempVote)
         let tempObj = {}
         if (data.tempVote.length === 1) tempObj.votee = data.tempVote.toString()
         else tempObj.votee = data.tempVote.pop().toString()
         tempObj.voter = data.tempVote.toString()
         data.notes[id].vote.push(tempObj)
       }
+      return {
+        ...state,
+        data
+      }
+    },
+    delVote (state, {payload: i, j}) {
+      var data = state
+      data.notes[i].vote.splice(j, 1)
       return {
         ...state,
         data

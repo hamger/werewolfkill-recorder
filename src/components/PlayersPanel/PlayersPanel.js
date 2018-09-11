@@ -42,7 +42,7 @@ class PlayersPanel extends Component {
               if (idx > -1 && playersArr[i].voted === 0) {
                 tempVote.splice(idx, 1)
               }
-              if (idx = -1 && playersArr[i].voted === 1) {
+              if (idx === -1 && playersArr[i].voted === 1) {
                 tempVote.push(i)
               }
               that.props.dispatch({
