@@ -3,7 +3,6 @@ export default {
   namespace: 'record',
 
   state: {
-    voteStatus: 0,
     amount: 12,
     players: [
       {id: 0, identity: '未知', status: '存活', voted: 0},
@@ -85,6 +84,9 @@ export default {
     },
     changeVoteStatus (state, {payload: status, id}) {
       var arr = state.notes
+      arr.forEach(item => {
+        item.voteStatus = 0
+      })
       arr[id].voteStatus = status
       return {
         ...state,
