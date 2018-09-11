@@ -6,7 +6,7 @@ const VoteInput = ({voter, votee}) => {
   return (
     <p className={styles.voteMark}>
       <span>{voter}</span>
-      投
+      { votee === '弃票' ? '' : '投' }
       <span>{votee}</span>
     </p>
   );

@@ -46,6 +46,7 @@ export default {
         tempVote: tempVote
       }
     },
+    // 初始化投票状态
     startVote (state) {
       let arr = state.players
       arr.forEach(element => {
@@ -57,16 +58,26 @@ export default {
         tempVote: [],
       }
     },
-    markVote (state, {payload: id}) {
+    // 记录投票状态
+    markVote (state, {payload: id, status}) {
       var data = state
+      
       if (data.tempVote.length > 0) {
         data.tempVote = data.tempVote.map(val => {
           return val + 1 + '号'
         })
         let tempObj = {}
-        if (data.tempVote.length === 1) tempObj.votee = data.tempVote.toString()
-        else tempObj.votee = data.tempVote.pop().toString()
-        tempObj.voter = data.tempVote.toString()
+        if (status) {
+          // 弃票状态
+          tempObj.voter = data.tempVote.toString()
+          tempObj.votee = '弃票'
+        } else {
+          // 被投票者（考虑到只选一个的情况，视为自投）
+          if (data.tempVote.length === 1) tempObj.votee = data.tempVote.toString()
+          else tempObj.votee = data.tempVote.pop().toString()
+          // 投票者
+          tempObj.voter = data.tempVote.toString()
+        }
         data.notes[id].vote.push(tempObj)
       }
       return {
@@ -74,6 +85,7 @@ export default {
         data
       }
     },
+    // 删除某行投票
     delVote (state, {payload: i, j}) {
       var data = state
       data.notes[i].vote.splice(j, 1)
@@ -82,6 +94,7 @@ export default {
         data
       }
     },
+    // 确定当前投票组
     changeVoteStatus (state, {payload: status, id}) {
       var arr = state.notes
       arr.forEach(item => {

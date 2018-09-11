@@ -12,9 +12,18 @@ class Record extends Component {
     this.record = props.record
     this.dispatch = props.dispatch
   }
-
+  endsVote (status, id) {
+    this.dispatch({
+      type: 'record/changeVoteStatus',
+      payload: status, id
+    })
+  }
   vote (status, id) {
     if(status === 1) {
+      this.dispatch({
+        type: 'record/markVote',
+        payload: id, status
+      })
       this.dispatch({
         type: 'record/startVote',
         payload: id
@@ -34,10 +43,6 @@ class Record extends Component {
         payload: id
       })
     }
-    this.dispatch({
-      type: 'record/changeVoteStatus',
-      payload: status, id
-    })
   }
   delVote (i, j) {
     this.dispatch({
@@ -64,10 +69,14 @@ class Record extends Component {
                     <div className={item.voteStatus === 0 ? styles.buttonBox : styles.buttonBox2}>
                     {
                       item.voteStatus === 0 ? (
-                        <Button onClick={() => this.vote(1, item.id)}>投票</Button>
+                        <Button onClick={() => this.endsVote(1, item.id)}>投票</Button>
                       ) : (
-                        [<Button key={0} onClick={() => this.vote(2, item.id)}>下一组</Button>,
-                        <Button key={1} onClick={() => this.vote(0, item.id)}>结束</Button>]
+                        [<Button onClick={() => this.vote(2, item.id)}>下一组</Button>,
+                          <Button onClick={() => this.vote(1, item.id)}>弃票</Button>,
+                        <Button onClick={() => {
+                          this.vote(0, item.id)
+                          this.endsVote(0, item.id)
+                        }}>结束</Button>]
                       )
                     }
                   </div>
@@ -88,7 +97,7 @@ class Record extends Component {
             )
           })
         }
-        <Button size='small' onClick={() => this.addNote()}>下一轮</Button>
+        <Button className={styles.addNote} size='small' onClick={() => this.addNote()}>下一轮</Button>
       </div>
     );
   }
