@@ -4,6 +4,7 @@ import styles from './Record.less';
 import PlayersPanel from '../../components/PlayersPanel/PlayersPanel';
 import VoteInput from '../../components/VoteInput/VoteInput';
 import { Button } from 'antd';
+import { routerRedux } from 'dva/router';
 
 class Record extends Component {
   constructor (props) {
@@ -12,6 +13,12 @@ class Record extends Component {
     this.record = props.record
     this.dispatch = props.dispatch
   }
+  componentDidMount () {
+    this.initState = {
+      allocation: this.allocation,
+      record: this.record
+    }
+  }
   endsVote (status, id) {
     this.dispatch({
       type: 'record/changeVoteStatus',
@@ -19,30 +26,13 @@ class Record extends Component {
     })
   }
   vote (status, id) {
-    if(status === 1) {
-      this.dispatch({
-        type: 'record/markVote',
-        payload: id, status
-      })
-      this.dispatch({
-        type: 'record/startVote',
-        payload: id
-      })
-    } else if (status === 2) {
-      this.dispatch({
-        type: 'record/markVote',
-        payload: id
-      })
-      this.dispatch({
-        type: 'record/startVote',
-        payload: id
-      })
-    } else {
-      this.dispatch({
-        type: 'record/markVote',
-        payload: id
-      })
-    }
+    this.dispatch({
+      type: 'record/markVote',
+      payload: id, status
+    })
+    this.dispatch({
+      type: 'record/startVote'
+    })
   }
   delVote (i, j) {
     this.dispatch({
@@ -53,6 +43,17 @@ class Record extends Component {
   addNote () {
     this.dispatch({
       type: 'record/addNote'
+    })
+  }
+  back () {
+    this.dispatch(routerRedux.push('/'));
+  }
+  reset () {
+    this.dispatch({
+      type: 'record/startVote'
+    })
+    this.dispatch({
+      type: 'record/reset'
     })
   }
 
@@ -69,14 +70,14 @@ class Record extends Component {
                     <div className={item.voteStatus === 0 ? styles.buttonBox : styles.buttonBox2}>
                     {
                       item.voteStatus === 0 ? (
-                        <Button onClick={() => this.endsVote(1, item.id)}>投票</Button>
+                        <Button key={0} onClick={() => this.endsVote(1, item.id)}>投票</Button>
                       ) : (
-                        [<Button onClick={() => this.vote(2, item.id)}>下一组</Button>,
-                          <Button onClick={() => this.vote(1, item.id)}>弃票</Button>,
-                        <Button onClick={() => {
-                          this.vote(0, item.id)
-                          this.endsVote(0, item.id)
-                        }}>结束</Button>]
+                        [<Button key={idx + '-0'} onClick={() => this.vote(2, item.id)}>下一组</Button>,
+                          <Button key={idx + '-1'} onClick={() => this.vote(1, item.id)}>弃票</Button>,
+                          <Button key={idx + '-2'} onClick={() => {
+                            this.vote(0, item.id)
+                            this.endsVote(0, item.id)
+                          }}>结束</Button>]
                       )
                     }
                   </div>
@@ -85,9 +86,9 @@ class Record extends Component {
                   {
                     item.vote.map((item2, index) => {
                       return (
-                        <div className={styles.listItem}>
-                          <VoteInput key={index} voter={item2.voter} votee={item2.votee}></VoteInput>
-                          <span key={index} className={styles.delBtn} onClick={() => this.delVote(idx, index)}>x</span>
+                        <div key={index} className={styles.listItem}>
+                          <VoteInput voter={item2.voter} votee={item2.votee}></VoteInput>
+                          <span className={styles.delBtn} onClick={() => this.delVote(idx, index)}>x</span>
                         </div>
                       )
                     })
@@ -97,7 +98,11 @@ class Record extends Component {
             )
           })
         }
-        <Button className={styles.addNote} size='small' onClick={() => this.addNote()}>下一轮</Button>
+        <div className={styles.btnBox} >
+          <Button className={styles.backBtn} size='small' onClick={() => this.back()}>返回</Button>
+          <Button className={styles.backBtn} size='small' onClick={() => this.reset()}>重置</Button>
+          <Button className={styles.addNote} size='small' onClick={() => this.addNote()}>下一轮</Button>
+        </div>
       </div>
     );
   }

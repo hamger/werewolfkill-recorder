@@ -3,6 +3,7 @@ export default {
   namespace: 'record',
 
   state: {
+    voteStatus: 0,
     amount: 12,
     players: [
       {id: 0, identity: '未知', status: '存活', voted: 0},
@@ -28,6 +29,18 @@ export default {
   },
 
   reducers: {
+    reset (state) {
+      return {
+        ...state,
+        voteStatus: 0,
+        notes: [{
+          id: 0,
+          voteStatus: 0,
+          title: '竞选警长',
+          vote: []
+        }]
+      }
+    },
     createPlayers (state, {payload: amount}) {
       const players = []
       for (let i = 0; i < amount; i++) {
@@ -67,7 +80,7 @@ export default {
           return val + 1 + '号'
         })
         let tempObj = {}
-        if (status) {
+        if (status === 1) {
           // 弃票状态
           tempObj.voter = data.tempVote.toString()
           tempObj.votee = '弃票'

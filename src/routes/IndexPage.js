@@ -6,7 +6,7 @@ import styles from './IndexPage.less';
 function IndexPage() {
   return (
     <div className={styles.normal}>
-      <h2 className={styles.title}>Hello<br/>Welcome to WR</h2>
+      <h2 className={styles.title}>Welcome to WR</h2>
       <ul className={styles.list}>
         <li><Link to="/allocation">设置配置</Link></li>
         <li><Link to="/record">记录本局</Link></li>
